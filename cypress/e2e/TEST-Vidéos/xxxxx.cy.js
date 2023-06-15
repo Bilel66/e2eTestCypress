@@ -53,7 +53,7 @@ describe('AFFICHAGE PAR TYPE DIFFUSION',()=>{
           })
         })
     })
-    it.only('AFFICHER LES VIDEOS TERMINES',()=>{
+    it('AFFICHER LES VIDEOS TERMINES',()=>{
         cy.login()
         cy.get('#iframe_list').its('0.contentDocument').should('exist').then((doc) => {
             const iframe1 = doc.querySelector('.iframe-video')
