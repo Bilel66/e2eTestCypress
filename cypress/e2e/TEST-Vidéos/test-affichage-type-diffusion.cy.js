@@ -13,7 +13,8 @@ describe('AFFICHAGE PAR TYPE DIFFUSION',()=>{
               cy.get('#table-liste-video').should('be.visible')
 
                 ///////////////////// TEST API RESPONSE ///////////////////////
-
+              let variableValue
+              let totalElement;
               cy.request({
                     method: 'GET',
                     url: 'https://k8s-scaleway-test-api-v4.webtv-solution.com/dataTable/videos/all?columns%5B0%5D%5Borderable%5D=true&draw=1&length=20&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=desc&start=0',
@@ -25,26 +26,29 @@ describe('AFFICHAGE PAR TYPE DIFFUSION',()=>{
                         'origin': 'https://app.webtv-solution'
                     }
                 })
-                    .then((response) => {
+                    
+                .then((response) => {
                         expect(response.status).to.eq(200); // Vérifie que le code de statut est 200
                         //expect(response.body).to.have.property('1 2532 2532 null'); 
 
                             // Extraire la valeur de la variable de la réponse JSON
-                        const variableValue = response.body.recordsFiltered;
+                        variableValue = response.body.recordsFiltered;
+                        cy.log("variableValue"+ variableValue)
+                    //////////////// EXTRAIRE NOMBRE ELEMENT DU PAGINATION ///////////////////
+                    //cy.log("variableValue"+ variableValue)
 
-                        //////////////// EXTRAIRE NOMBRE ELEMENT DU PAGINATION ///////////////////
-                        let totalElement;
-                        cy.get("#embed_site > any > div:nth-child(4) > div > div.align-items-center > span:nth-child(2)").then((e)=>{
-                            let mytext=e.text()
-                            cy.log(mytext)
-                            totalElement=mytext.substring(mytext.indexOf("/ ")+1, mytext.indexOf("éléments")-1)
-                            cy.log("Total element : ===>"+totalElement)
-                        })
-
-                        // Effectuer une assertion pour vérifier la valeur extraite
-                        expect(variableValue).to.equal(totalElement);
-                        ///// expect(numericValue.toString()).to.equal(expectedValue);
+                    cy.get("#embed_site > any > div:nth-child(4) > div > div.align-items-center > span:nth-child(2)").then((e)=>{
+                        let mytext=e.text()
+                        cy.log(mytext)
+                        totalElement=mytext.substring(mytext.indexOf("/ ")+1, mytext.indexOf("éléments")-1)
+                        cy.log("Total element : ===>"+totalElement)
+                        expect(variableValue).to.equal(Number(totalElement));
                     })
+
+                    // Effectuer une assertion pour vérifier la valeur extraite
+                    //expect(variableValue).to.equal(totalElement);
+                    ///// expect(numericValue.toString()).to.equal(expectedValue);
+                })
             })
         })
   /*it('AFFICHER LES VIDEOS TERMINES',()=>{

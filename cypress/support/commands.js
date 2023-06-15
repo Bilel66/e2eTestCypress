@@ -38,6 +38,7 @@ Cypress.Commands.add('login',()=>{
     cy.url().should('eql','https://app.webtv-solution.dev/login/step2/') 
     cy.get('#input_3').type('ca?akuWra2')
     cy.get('.circular-progress-button > .ng-binding').click()
+    cy.wait(5000)
     cy.url().should('eql','https://app.webtv-solution.dev/medias/videos?type=ongoing')
     cy.wait(3000)
 })
