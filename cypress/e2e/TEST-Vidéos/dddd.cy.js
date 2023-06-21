@@ -1,5 +1,5 @@
 describe('AFFICHAGE PAR TYPE DIFFUSION', () => {
-    beforeEach(() => {
+    //beforeEach(() => {
         cy.login();
 
         const curl = 'https://k8s-scaleway-test-api-v4.webtv-solution.com/dataTable/videos/ongoing?columns%5B0%5D%5Borderable%5D=true&draw=1&length=20&order%5B0%5D%5Bcolumn%5D=0&order%5B0%5D%5Bdir%5D=desc&start=0'
@@ -20,10 +20,10 @@ describe('AFFICHAGE PAR TYPE DIFFUSION', () => {
             expect(response.status).to.eq(200); 
         })
         
-    });
+    //});
     
     it('SEARCH BY ID', () => {
-
+            cy.login();
 
 
 

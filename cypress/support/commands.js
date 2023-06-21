@@ -40,7 +40,7 @@ Cypress.Commands.add('login',()=>{
     cy.get('.circular-progress-button > .ng-binding').click()
     cy.wait(5000)
     cy.url().should('eql','https://app.webtv-solution.dev/medias/videos?type=ongoing')
-    cy.wait(3000)
+    cy.wait(10000)
 })
 
 //******************** IFRAME ************************
@@ -54,3 +54,49 @@ Cypress.Commands.add('loadNestedIframe', (iframeSelector1,iframeSelector2) => {
       return cy.wrap(iframe2);
     });
 });
+
+///////////////////////////// JASSER ////////////////////////////////////
+//import 'cypress-audit/commands';
+//import 'cypress-file-upload';
+//import '@4tw/cypress-drag-drop'
+import 'cypress-iframe';
+
+Cypress.Commands.add(
+    'iframeLoaded',
+    { prevSubject: 'element' },
+    ($iframe) => {
+        const contentWindow = $iframe.prop('contentWindow')
+        return new Promise(resolve => {
+            $iframe.on('load', () => {
+                setTimeout(function(){
+
+                    console.log('load', contentWindow)
+                    resolve(contentWindow)
+                    console.log('load wait 3000', contentWindow.document)
+                    console.log('load wait 3000', contentWindow.document.querySelector("button"))
+
+                },4000)
+            })
+        })
+    });
+
+Cypress.Commands.add(
+    'getInDocument',
+    { prevSubject: 'document' },
+    (document, selector) => {
+        return Cypress.$(selector, document)
+    });
+Cypress.Commands.add("getIframeElement", (selector, name) => {
+    cy.get(selector)
+        .then($iframe => {
+            const $doc = $iframe.contents();
+            return cy.wrap($doc[0].body);
+        })
+        .find(name)
+
+});
+
+
+
+
+
